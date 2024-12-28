@@ -3,7 +3,7 @@ const URLAPI = "https://sycret.ru/service/api/api";
 async function f(method, data, url) {
   const response = await fetch(url, {
     method: method,
-    body: data,
+    body: JSON.stringify(data),
     headers: {
       "Content-type": "application/json",
     },
@@ -16,6 +16,6 @@ async function f(method, data, url) {
   }
 }
 
-async function getCertificates(dataObj) {
+export async function getCertificates(dataObj) {
   return await f("POST", dataObj, URLAPI);
 }
