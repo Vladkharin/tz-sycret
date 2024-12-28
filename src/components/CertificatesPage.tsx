@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  gap: 20px;
 `;
 
 const ChooseCertificate = styled.div`
@@ -36,35 +37,60 @@ const ChooseArrow = styled.img`
   border-left: 1px solid grey;
 `;
 
+const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
+  width: 300px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  opacity: ${(props) => (props.$activeClass ? "1" : "0")};
+`;
+
+const ChooseCertificateItem = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+`;
+
 export function CertificatesPage() {
   const [certificateText, setCertificateText] = useState<string>("Выбрать товар");
-  const [certificatesData, setCertificatesData] = useState({});
+  const [certificatesData, setCertificatesData] = useState([]);
+  const [menuState, setMenuState] = useState<boolean>(false);
 
   async function handle() {
     const options = {
       ApiKey: "011ba11bdcad4fa396660c2ec447ef14",
       MethodName: "OSGetGoodList",
     };
-    const data = getCertificates(options);
+    const data = await getCertificates(options);
 
-    setCertificatesData(data);
+    setCertificatesData(data.data);
   }
 
   useEffect(() => {
     handle();
   }, []);
 
-  console.log(certificatesData);
+  if (!certificatesData) {
+    return;
+  }
+
   return (
-    <>
-      <Section>
-        <Wrapper>
-          <ChooseCertificate>
-            <ChooseText>{certificateText}</ChooseText>
-            <ChooseArrow src={arrow} alt={"arrow"}></ChooseArrow>
-          </ChooseCertificate>
-        </Wrapper>
-      </Section>
-    </>
+    <Section>
+      <Wrapper>
+        <ChooseCertificate onClick={() => (menuState ? setMenuState(false) : setMenuState(true))}>
+          <ChooseText>{certificateText}</ChooseText>
+          <ChooseArrow src={arrow} alt={"arrow"}></ChooseArrow>
+        </ChooseCertificate>
+        <ChooseCertificateMenu $activeClass={menuState}>
+          {certificatesData.map((certificate, index) => {
+            return <ChooseCertificateItem key={index}>{certificate.NAME}</ChooseCertificateItem>;
+          })}
+        </ChooseCertificateMenu>
+      </Wrapper>
+    </Section>
   );
 }
