@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getCertificates } from "../API/routes.ts";
+import { CERTIFICATE } from "../App.tsx";
 
 const arrow = require("../assets/icons/arrow.svg").default as string;
 const Section = styled.section`
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
 const ChooseCertificate = styled.div`
   display: flex;
   border: 1px solid black;
-  width: 300px;
+  width: 420px;
   height: 50px;
 `;
 
@@ -27,18 +28,18 @@ const ChooseText = styled.div`
   padding: 10px;
   color: black;
   font-size: 20px;
-  flex-basis: 80%;
+  flex-basis: 90%;
 `;
 
 const ChooseArrow = styled.img`
-  flex-basis: 20%;
+  flex-basis: 10%;
   padding: 10px;
   border-right: 1px solid grey;
   border-left: 1px solid grey;
 `;
 
 const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
-  width: 300px;
+  width: 420px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -55,9 +56,29 @@ const ChooseCertificateItem = styled.div`
   border: 1px solid black;
 `;
 
-export function CertificatesPage() {
-  const [certificateText, setCertificateText] = useState<string>("Выбрать товар");
-  const [certificatesData, setCertificatesData] = useState([]);
+const OrderWrapper = styled.div<{ $active: string }>`
+  display: ${(props) => props.$active};
+  flex-direction: column;
+  align-items: center;
+`;
+
+const OrderText = styled.p`
+  font-size: 20px;
+  color: black;
+`;
+
+const OrderSpan = styled.span`
+  font-weight: bold;
+`;
+
+const OrderButton = styled.button`
+  width: 100px;
+  height: 50px;
+`;
+
+export function CertificatesPage(): JSX.Element {
+  const [certificate, setCertificate] = useState<CERTIFICATE>();
+  const [certificatesData, setCertificatesData] = useState<CERTIFICATE[]>([]);
   const [menuState, setMenuState] = useState<boolean>(false);
 
   async function handle() {
@@ -74,22 +95,41 @@ export function CertificatesPage() {
     handle();
   }, []);
 
-  if (!certificatesData) {
-    return;
+  console.log(certificatesData);
+
+  if (certificatesData.length <= 0) {
+    console.log(1);
+    return <div>Hello world</div>;
   }
 
   return (
     <Section>
       <Wrapper>
         <ChooseCertificate onClick={() => (menuState ? setMenuState(false) : setMenuState(true))}>
-          <ChooseText>{certificateText}</ChooseText>
+          <ChooseText>{certificate ? certificate.NAME : "Выбрать товар"}</ChooseText>
           <ChooseArrow src={arrow} alt={"arrow"}></ChooseArrow>
         </ChooseCertificate>
         <ChooseCertificateMenu $activeClass={menuState}>
           {certificatesData.map((certificate, index) => {
-            return <ChooseCertificateItem key={index}>{certificate.NAME}</ChooseCertificateItem>;
+            return (
+              <ChooseCertificateItem
+                onClick={() => {
+                  setCertificate(certificate);
+                  setMenuState(false);
+                }}
+                key={index}
+              >
+                {certificate.NAME}
+              </ChooseCertificateItem>
+            );
           })}
         </ChooseCertificateMenu>
+        <OrderWrapper $active={certificate ? "flex" : "none"}>
+          <OrderText>
+            Цена - <OrderSpan>{certificate?.SUMMA.split(".")[0]} р.</OrderSpan>
+          </OrderText>
+          <OrderButton>Купить</OrderButton>
+        </OrderWrapper>
       </Wrapper>
     </Section>
   );
