@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getCertificates } from "../API/routes.ts";
 import { CERTIFICATE } from "../App.tsx";
+import { Link } from "react-router-dom";
 
 const arrow = require("../assets/icons/arrow.svg").default as string;
+const loading = require("../assets/icons/spinning-dots.svg").default as string;
 const Section = styled.section`
   min-height: 100vh;
   display: flex;
@@ -57,9 +59,10 @@ const ChooseCertificateItem = styled.div`
 `;
 
 const OrderWrapper = styled.div<{ $active: string }>`
-  display: ${(props) => props.$active};
+  display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: ${(props) => props.$active};
 `;
 
 const OrderText = styled.p`
@@ -76,8 +79,24 @@ const OrderButton = styled.button`
   height: 50px;
 `;
 
-export function CertificatesPage(): JSX.Element {
-  const [certificate, setCertificate] = useState<CERTIFICATE>();
+const ImgLoading = styled.img`
+  transition: rotate 5s;
+  width: 100px;
+  height: 100px;
+`;
+
+const LinkToForm = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
+export function CertificatesPage({
+  certificate,
+  setCertificate,
+}: {
+  certificate: CERTIFICATE;
+  setCertificate: React.Dispatch<React.SetStateAction<CERTIFICATE>>;
+}): JSX.Element {
   const [certificatesData, setCertificatesData] = useState<CERTIFICATE[]>([]);
   const [menuState, setMenuState] = useState<boolean>(false);
 
@@ -98,15 +117,20 @@ export function CertificatesPage(): JSX.Element {
   console.log(certificatesData);
 
   if (certificatesData.length <= 0) {
-    console.log(1);
-    return <div>Hello world</div>;
+    return (
+      <Section>
+        <Wrapper>
+          <ImgLoading src={loading}></ImgLoading>
+        </Wrapper>
+      </Section>
+    );
   }
 
   return (
     <Section>
       <Wrapper>
         <ChooseCertificate onClick={() => (menuState ? setMenuState(false) : setMenuState(true))}>
-          <ChooseText>{certificate ? certificate.NAME : "Выбрать товар"}</ChooseText>
+          <ChooseText>{certificate.ID !== "" ? certificate.NAME : "Выбрать товар"}</ChooseText>
           <ChooseArrow src={arrow} alt={"arrow"}></ChooseArrow>
         </ChooseCertificate>
         <ChooseCertificateMenu $activeClass={menuState}>
@@ -124,11 +148,13 @@ export function CertificatesPage(): JSX.Element {
             );
           })}
         </ChooseCertificateMenu>
-        <OrderWrapper $active={certificate ? "flex" : "none"}>
+        <OrderWrapper $active={certificate.ID !== "" ? "1" : "0"}>
           <OrderText>
             Цена - <OrderSpan>{certificate?.SUMMA.split(".")[0]} р.</OrderSpan>
           </OrderText>
-          <OrderButton>Купить</OrderButton>
+          <LinkToForm to={"/order-form"}>
+            <OrderButton>Купить</OrderButton>
+          </LinkToForm>
         </OrderWrapper>
       </Wrapper>
     </Section>
