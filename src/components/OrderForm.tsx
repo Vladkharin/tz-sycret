@@ -4,6 +4,7 @@ import { useMask } from "@react-input/mask";
 import { Link, useNavigate } from "react-router-dom";
 import { CERTIFICATE } from "./CertificatesPage";
 import { OSSale } from "../API/routes.ts";
+import { error } from "console";
 
 const Section = styled.section`
   min-height: 100vh;
@@ -29,7 +30,9 @@ const Form = styled.form`
 `;
 
 const Input = styled.input<{ $error: boolean }>`
-  width: 300px;
+  width: auto;
+  max-width: 300px;
+  min-width: 280px;
   height: 30px;
   padding: 10px;
   border: none;
@@ -113,32 +116,63 @@ export function OrderForm() {
   }
 
   function focusOutPhoneInput() {
-    formData.phone.replace(/[^.\d]+/g, "").length < 11
-      ? setErrorForm({ ...errorForm, phone: "Вы ввели некорректный телефон" })
-      : setErrorForm({ ...errorForm, phone: "" });
+    if (formData.phone.replace(/[^.\d]+/g, "").length < 11) {
+      setErrorForm({ ...errorForm, phone: "Вы ввели некорректный телефон" });
+      return "Вы ввели некорректный телефон";
+    } else {
+      setErrorForm({ ...errorForm, phone: "" });
+      return "";
+    }
   }
 
   function focusOutNameInput() {
-    formData.name.length === 0
-      ? setErrorForm({ ...errorForm, name: "Имя должно быть заполнено" })
-      : setErrorForm({ ...errorForm, name: "" });
+    if (formData.name.length === 0) {
+      setErrorForm({ ...errorForm, name: "Имя должно быть заполнено" });
+      return "Имя должно быть заполнено";
+    } else {
+      setErrorForm({ ...errorForm, name: "" });
+      return "";
+    }
   }
 
   function focusOutMailInput() {
     if (formData.mail.length === 0) {
       setErrorForm({ ...errorForm, mail: "Почта должна быть заполнена" });
-      return;
+      return "Почта должна быть заполнена";
     }
 
     const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    formData.mail.match(validRegex)
-      ? setErrorForm({ ...errorForm, mail: "" })
-      : setErrorForm({ ...errorForm, mail: "Вы ввели некорректную почту" });
+    if (formData.mail.match(validRegex)) {
+      setErrorForm({ ...errorForm, mail: "" });
+      return "";
+    } else {
+      setErrorForm({ ...errorForm, mail: "Вы ввели некорректную почту" });
+      return "Вы ввели некорректную почту";
+    }
+  }
+
+  function validateForm() {
+    errorForm.phone = focusOutPhoneInput();
+    errorForm.name = focusOutNameInput();
+    errorForm.mail = focusOutMailInput();
+
+    if (errorForm.phone || errorForm.name || errorForm.mail) {
+      return true;
+    }
+
+    return false;
   }
 
   async function postData(event: React.FormEvent<HTMLFormElement>, certificate: CERTIFICATE) {
     event.preventDefault();
+
+    const error = validateForm();
+
+    if (error) {
+      return;
+    }
+
     const target = event.target as HTMLFormElement;
 
     const obj = {
