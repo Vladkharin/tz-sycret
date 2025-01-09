@@ -1,8 +1,26 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getCertificates } from "../API/routes.ts";
-import { CERTIFICATE } from "../App.tsx";
 import { Link } from "react-router-dom";
+
+export type CERTIFICATE = {
+  ID: string;
+  TABLENAME: string;
+  PRIMARYKEY: string;
+  NAME: string;
+  DESCRIPTION: string;
+  PRICE: string;
+  SUMMA: string;
+  DISCOUNT: string;
+  IMAGEURL: string;
+  REC_SNO: string;
+  REC_NAME: string;
+  REC_SUM: string;
+  REC_QUANTITY: string;
+  REC_PAYMENT_METHOD: string;
+  REC_PAYMENT_OBJECT: string;
+  REC_TAX: string;
+};
 
 const arrow = require("../assets/icons/arrow.svg").default as string;
 const loading = require("../assets/icons/spinning-dots.svg").default as string;
@@ -22,7 +40,7 @@ const Wrapper = styled.div`
 const ChooseCertificate = styled.div`
   display: flex;
   border: 1px solid black;
-  width: 420px;
+  width: 320px;
   height: 50px;
 `;
 
@@ -41,7 +59,7 @@ const ChooseArrow = styled.img`
 `;
 
 const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
-  width: 420px;
+  width: 320px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -90,22 +108,30 @@ const LinkToForm = styled(Link)`
   color: inherit;
 `;
 
-export function CertificatesPage({
-  certificate,
-  setCertificate,
-}: {
-  certificate: CERTIFICATE;
-  setCertificate: React.Dispatch<React.SetStateAction<CERTIFICATE>>;
-}): JSX.Element {
+export function CertificatesPage(): JSX.Element {
+  const [certificate, setCertificate] = useState<CERTIFICATE>({
+    ID: "",
+    TABLENAME: "",
+    PRIMARYKEY: "",
+    NAME: "",
+    DESCRIPTION: "",
+    PRICE: "",
+    SUMMA: "",
+    DISCOUNT: "",
+    IMAGEURL: "",
+    REC_SNO: "",
+    REC_NAME: "",
+    REC_SUM: "",
+    REC_QUANTITY: "",
+    REC_PAYMENT_METHOD: "",
+    REC_PAYMENT_OBJECT: "",
+    REC_TAX: "",
+  });
   const [certificatesData, setCertificatesData] = useState<CERTIFICATE[]>([]);
   const [menuState, setMenuState] = useState<boolean>(false);
 
   async function handle() {
-    const options = {
-      ApiKey: "011ba11bdcad4fa396660c2ec447ef14",
-      MethodName: "OSGetGoodList",
-    };
-    const data = await getCertificates(options);
+    const data = await getCertificates();
 
     setCertificatesData(data.data);
   }
@@ -113,8 +139,6 @@ export function CertificatesPage({
   useEffect(() => {
     handle();
   }, []);
-
-  console.log(certificatesData);
 
   if (certificatesData.length <= 0) {
     return (
@@ -140,6 +164,8 @@ export function CertificatesPage({
                 onClick={() => {
                   setCertificate(certificate);
                   setMenuState(false);
+                  localStorage.removeItem("certificate");
+                  localStorage.setItem("certificate", JSON.stringify(certificate));
                 }}
                 key={index}
               >

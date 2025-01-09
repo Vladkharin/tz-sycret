@@ -1,9 +1,8 @@
 const URLAPI = "https://sycret.ru/service/api/api";
 
-async function f(method: string, data, url: string) {
+async function f(method: string, url: string) {
   const response = await fetch(url, {
     method: method,
-    // body: JSON.stringify(data),
     headers: {
       "Accept-Control-Allow-Origin": "*",
       "Content-type": "application/json",
@@ -18,6 +17,10 @@ async function f(method: string, data, url: string) {
   }
 }
 
-export async function getCertificates(dataObj) {
-  return await f("GET", dataObj, URLAPI + "?MethodName=OSGetGoodList&ismob=0&ApiKey=011ba11bdcad4fa396660c2ec447ef14");
+export async function getCertificates() {
+  return await f("GET", URLAPI + "?MethodName=OSGetGoodList&ismob=0&ApiKey=011ba11bdcad4fa396660c2ec447ef14");
+}
+
+export async function OSSale(url) {
+  return await f("GET", URLAPI + "?" + url);
 }
