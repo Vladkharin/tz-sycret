@@ -49,14 +49,15 @@ const Wrapper = styled.div`
 
 const ChooseCertificate = styled.div`
   display: flex;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
+  border-radius: 15px;
   width: 320px;
   height: 50px;
   cursor: pointer;
   background-color: white;
 
   &:hover {
-    background-color: #ff2400;
+    background-color: #ffadad;
   }
 `;
 
@@ -76,7 +77,7 @@ const ChooseArrow = styled.img<{ $rotate }>`
 const ChooseArrowDiv = styled.div`
   flex-basis: 10%;
   padding: 10px;
-  border-left: 1px solid black;
+  border-left: 1px solid #ffadad;
 `;
 const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
   width: 320px;
@@ -93,19 +94,26 @@ const ChooseCertificateItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border-left: 1px solid #ffadad;
+  border-right: 1px solid #ffadad;
   background-color: white;
   cursor: pointer;
   &:first-child {
-    border-top: 1px solid black;
+    border-top: 1px solid #ffadad;
+    border-radius: 15px 15px 0 0;
   }
 
-  border-bottom: 1px solid black;
+  &:last-child {
+    border-radius: 0 0 15px 15px;
+  }
+
+  border-bottom: 1px solid #ffadad;
 
   &:hover {
-    background-color: #ff2400;
+    background-color: #ffadad;
   }
+
+  box-shadow: none;
 `;
 
 const OrderWrapper = styled.div<{ $active: string }>`
@@ -128,12 +136,12 @@ const OrderButton = styled.button`
   width: 100px;
   height: 50px;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
   border-radius: 10px;
   cursor: pointer;
 
   &:hover {
-    background-color: #ff2400;
+    background-color: #ffadad;
   }
 `;
 

@@ -34,7 +34,7 @@ const Form = styled.form`
   background-color: grey;
   padding: 20px;
   justify-content: flex-start;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
   border-radius: 10px;
   background-color: white;
   width: auto;
@@ -47,7 +47,7 @@ const Input = styled.input<{ $error: boolean }>`
   min-width: 280px;
   height: 30px;
   padding: 10px;
-  border: 1px solid ${(props) => (props.$error ? "red" : "black")};
+  border: 1px solid ${(props) => (props.$error ? "red" : "#ffadad")};
   border-radius: 5px;
 `;
 
@@ -58,7 +58,7 @@ const Error = styled.div<{ $activeClass: string }>`
 
 const TextArea = styled.textarea`
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
   border-radius: 5px;
 `;
 
@@ -78,7 +78,7 @@ const Label = styled.label<{ $error: boolean }>`
 const LinkBack = styled(Link)`
   height: 50px;
   width: 100px;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,14 +87,14 @@ const LinkBack = styled(Link)`
   border-radius: 10px;
 
   &:hover {
-    background-color: #ff2400;
+    background-color: #ffadad;
   }
 `;
 
 const ButtonSubmit = styled.button`
   height: 50px;
   width: 150px;
-  border: 1px solid black;
+  border: 1px solid #ffadad;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +103,7 @@ const ButtonSubmit = styled.button`
   cursor: pointer;
   border-radius: 10px;
   &:hover {
-    background-color: #ff2400;
+    background-color: #ffadad;
   }
 `;
 
