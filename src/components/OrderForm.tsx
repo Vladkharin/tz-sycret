@@ -4,12 +4,16 @@ import { useMask } from "@react-input/mask";
 import { Link, useNavigate } from "react-router-dom";
 import { CERTIFICATE } from "./CertificatesPage";
 import { OSSale } from "../API/routes.ts";
-import { error } from "console";
 
-const Section = styled.section`
+const backgroundImg = require("../assets/image/order-background.png");
+
+const Section = styled.section<{ $background: string }>`
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  background: url(${(props) => props.$background});
+  background-repeat: no-repeat;
+  background-position: left;
 `;
 
 const Wrapper = styled.div`
@@ -17,6 +21,10 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  backdrop-filter: blur(3px);
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
 `;
 
 const Form = styled.form`
@@ -26,8 +34,11 @@ const Form = styled.form`
   background-color: grey;
   padding: 20px;
   justify-content: flex-start;
+  border: 1px solid black;
   border-radius: 10px;
   background-color: white;
+  width: auto;
+  height: auto;
 `;
 
 const Input = styled.input<{ $error: boolean }>`
@@ -223,7 +234,7 @@ export function OrderForm() {
   }
 
   return (
-    <Section>
+    <Section $background={backgroundImg}>
       <Wrapper>
         <Form onSubmit={(event) => postData(event, certificate)}>
           <TitleForm>{certificate.NAME}</TitleForm>

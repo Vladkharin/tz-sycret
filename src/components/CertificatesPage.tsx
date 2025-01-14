@@ -24,10 +24,15 @@ export type CERTIFICATE = {
 
 const arrow = require("../assets/icons/arrow.svg").default as string;
 const loading = require("../assets/icons/spinning-dots.svg").default as string;
-const Section = styled.section`
+const backgroundImg = require("../assets/image/certificate-background.png");
+
+const Section = styled.section<{ $background: string }>`
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  background: url(${(props) => props.$background});
+  background-repeat: no-repeat;
+  background-position: right;
 `;
 
 const Wrapper = styled.div`
@@ -35,6 +40,11 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+  background: url(backgroundImg);
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  backdrop-filter: blur(3px);
 `;
 
 const ChooseCertificate = styled.div`
@@ -174,7 +184,7 @@ export function CertificatesPage(): JSX.Element {
 
   if (certificatesData.length <= 0) {
     return (
-      <Section>
+      <Section $background={backgroundImg}>
         <Wrapper>
           <ImgLoading src={loading}></ImgLoading>
         </Wrapper>
@@ -183,7 +193,7 @@ export function CertificatesPage(): JSX.Element {
   }
 
   return (
-    <Section>
+    <Section $background={backgroundImg}>
       <Wrapper>
         <ChooseCertificate onClick={() => (menuState ? setMenuState(false) : setMenuState(true))}>
           <ChooseText>{certificate.ID !== "" ? certificate.NAME : "Выбрать товар"}</ChooseText>
