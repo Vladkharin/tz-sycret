@@ -27,6 +27,7 @@ const Form = styled.form`
   padding: 20px;
   justify-content: flex-start;
   border-radius: 10px;
+  background-color: white;
 `;
 
 const Input = styled.input<{ $error: boolean }>`
@@ -35,8 +36,8 @@ const Input = styled.input<{ $error: boolean }>`
   min-width: 280px;
   height: 30px;
   padding: 10px;
-  border: none;
   border: 1px solid ${(props) => (props.$error ? "red" : "black")};
+  border-radius: 5px;
 `;
 
 const Error = styled.div<{ $activeClass: string }>`
@@ -46,6 +47,8 @@ const Error = styled.div<{ $activeClass: string }>`
 
 const TextArea = styled.textarea`
   padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
 `;
 
 const InputWithError = styled.div`
@@ -70,6 +73,11 @@ const LinkBack = styled(Link)`
   justify-content: center;
   text-decoration: none;
   color: black;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: #ff2400;
+  }
 `;
 
 const ButtonSubmit = styled.button`
@@ -82,6 +90,10 @@ const ButtonSubmit = styled.button`
   color: black;
   background: none;
   cursor: pointer;
+  border-radius: 10px;
+  &:hover {
+    background-color: #ff2400;
+  }
 `;
 
 const LinksWrapper = styled.div`

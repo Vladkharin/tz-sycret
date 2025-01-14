@@ -42,6 +42,12 @@ const ChooseCertificate = styled.div`
   border: 1px solid black;
   width: 320px;
   height: 50px;
+  cursor: pointer;
+  background-color: white;
+
+  &:hover {
+    background-color: #ff2400;
+  }
 `;
 
 const ChooseText = styled.div`
@@ -51,20 +57,24 @@ const ChooseText = styled.div`
   flex-basis: 90%;
 `;
 
-const ChooseArrow = styled.img`
-  flex-basis: 10%;
-  padding: 10px;
-  border-right: 1px solid grey;
-  border-left: 1px solid grey;
+const ChooseArrow = styled.img<{ $rotate }>`
+  height: 100%;
+  rotate: ${(props) => (props.$rotate ? "180deg" : "0deg")};
+  transition: all 1s ease-in-out;
 `;
 
+const ChooseArrowDiv = styled.div`
+  flex-basis: 10%;
+  padding: 10px;
+  border-left: 1px solid black;
+`;
 const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
   width: 320px;
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 1px;
   opacity: ${(props) => (props.$activeClass ? "1" : "0")};
+  transition: all 1s ease-in-out;
 `;
 
 const ChooseCertificateItem = styled.div`
@@ -73,7 +83,19 @@ const ChooseCertificateItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  background-color: white;
+  cursor: pointer;
+  &:first-child {
+    border-top: 1px solid black;
+  }
+
+  border-bottom: 1px solid black;
+
+  &:hover {
+    background-color: #ff2400;
+  }
 `;
 
 const OrderWrapper = styled.div<{ $active: string }>`
@@ -95,6 +117,14 @@ const OrderSpan = styled.span`
 const OrderButton = styled.button`
   width: 100px;
   height: 50px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ff2400;
+  }
 `;
 
 const ImgLoading = styled.img`
@@ -106,6 +136,8 @@ const ImgLoading = styled.img`
 const LinkToForm = styled(Link)`
   text-decoration: none;
   color: inherit;
+  background-color: white;
+  border-radius: 10px;
 `;
 
 export function CertificatesPage(): JSX.Element {
@@ -155,7 +187,9 @@ export function CertificatesPage(): JSX.Element {
       <Wrapper>
         <ChooseCertificate onClick={() => (menuState ? setMenuState(false) : setMenuState(true))}>
           <ChooseText>{certificate.ID !== "" ? certificate.NAME : "Выбрать товар"}</ChooseText>
-          <ChooseArrow src={arrow} alt={"arrow"}></ChooseArrow>
+          <ChooseArrowDiv>
+            <ChooseArrow $rotate={menuState ? true : false} src={arrow} alt={"arrow"}></ChooseArrow>
+          </ChooseArrowDiv>
         </ChooseCertificate>
         <ChooseCertificateMenu $activeClass={menuState}>
           {certificatesData.map((certificate, index) => {
