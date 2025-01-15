@@ -78,6 +78,8 @@ const ChooseArrowDiv = styled.div`
   flex-basis: 10%;
   padding: 10px;
   border-left: 1px solid #ffadad;
+  display: flex;
+  justify-content: center;
 `;
 const ChooseCertificateMenu = styled.div<{ $activeClass: boolean }>`
   width: 320px;
